@@ -1,6 +1,9 @@
 import os
 import apache_log_parser
 from pprint import pprint
+import datetime
+from datetime import timedelta
+import pandas as pd
 
 
 def read_apache_log(log_dir, logformat):
@@ -40,7 +43,7 @@ def read_apache_log(log_dir, logformat):
     pprint('====================')
     print()
     
-    return parsed_logs
+    return pd.DataFrame(parsed_logs)
 
 
 def aggregate_access_count(log_datas):
@@ -59,14 +62,14 @@ def aggregate_access_count(log_datas):
     """
     access_num_per_hour = [0] * 24
     access_num_per_host = dict()
-    for log_data in log_datas:
-        access_num_per_hour[log_data['time_received_datetimeobj'].hour] += 1 # 時間帯ごとのアクセス件数の集計
+    for log_data in log_datas.itertuples():
+        access_num_per_hour[log_data.time_received_datetimeobj.hour] += 1 # 時間帯ごとのアクセス件数の集計
 
-        if log_data['remote_host'] not in access_num_per_host.keys(): # リモートホスト別のアクセス件数の集計
-            access_num_per_host[log_data['remote_host']] = 1
+        if log_data.remote_host not in access_num_per_host.keys(): # リモートホスト別のアクセス件数の集計
+            access_num_per_host[log_data.remote_host] = 1
         else:
-            access_num_per_host[log_data['remote_host']] += 1
-    access_num_per_host = sorted(access_num_per_host.items(), key=lambda x:x[0], reverse=True) # アクセスの多いリモートホストの順にソート
+            access_num_per_host[log_data.remote_host] += 1
+    access_num_per_host = sorted(access_num_per_host.items(), key=lambda x:x[0]) # アクセスの多いリモートホストの順にソート
 
     return access_num_per_hour, access_num_per_host
 
