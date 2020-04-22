@@ -1,13 +1,14 @@
+import os
 import apache_log_parser
 from pprint import pprint
 
 
-def read_apache_log(log_file, logformat):
+def read_apache_log(log_dir, logformat):
     """ログファイルを読む関数
     Parameters
     ---------------
-    log_file: str
-        ログファイルのパス
+    log_dir: str
+        ログファイルが存在するディレクトリのパス
     logformat: str
         アクセスログの形式
         
@@ -22,13 +23,15 @@ def read_apache_log(log_file, logformat):
     parser = apache_log_parser.make_parser(logformat)
     parsed_logs = []
     error_logs = []
-    with open(log_file) as f:
-        for line in f:
-            try:
-                parsed_line = parser(line)
-                parsed_logs.append(parsed_line)
-            except ValueError:
-                error_logs.append(line)
+    for filename in os.listdir(log_dir):
+        log_file = os.path.join(log_dir, filename)
+        with open(log_file) as f:
+            for line in f:
+                try:
+                    parsed_line = parser(line)
+                    parsed_logs.append(parsed_line)
+                except ValueError:
+                    error_logs.append(line)
                 
     print()
     pprint('=== Read Summary ===')
@@ -70,7 +73,7 @@ def aggregate_access_count(log_datas):
 
 if __name__ == '__main__':
     LogFormat = '%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"'
-    log_datas = read_apache_log(input('apache logfile: '), LogFormat)
+    log_datas = read_apache_log(input('apache logdir path: '), LogFormat)
     access_num_per_hour, access_num_per_host = aggregate_access_count(log_datas)
 
     print(access_num_per_hour)
