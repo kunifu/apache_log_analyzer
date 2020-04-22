@@ -74,9 +74,19 @@ def aggregate_access_count(log_datas):
     return access_num_per_hour, access_num_per_host
 
 
+def squeeze_log(log_datas, start, end):
+    return log_datas[(start <= log_datas['time_received_datetimeobj']) & (log_datas['time_received_datetimeobj'] < (end + timedelta(days=1)))]
+
+
 if __name__ == '__main__':
     LogFormat = '%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"'
-    log_datas = read_apache_log(input('apache logdir path: '), LogFormat)
+    log_datas = read_apache_log(input('アクセスログディレクトリのパスを入力して下さい: '), LogFormat)
+    
+    if input('アクセスログの期間指定しますか？ [Y/n]: ').lower() == 'y':
+        start = datetime.datetime.strptime(input('「年/月/日」の形式で半角で開始期間を入力して下さい: '), '%Y/%m/%d')
+        end = datetime.datetime.strptime(input('「年/月/日」の形式で半角で終了期間を入力して下さい: '), '%Y/%m/%d')
+        log_datas = squeeze_log(log_datas, start, end)
+
     access_num_per_hour, access_num_per_host = aggregate_access_count(log_datas)
 
     print(access_num_per_hour)
