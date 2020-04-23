@@ -91,8 +91,8 @@ def squeeze_log(log_datas, start, end):
 
 
 if __name__ == '__main__':
-    LogFormat = '%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"'
-    log_datas = read_apache_log(input('アクセスログディレクトリのパスを入力して下さい．: '), LogFormat)
+    LOG_FORMAT = '%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"'
+    log_datas = read_apache_log(input('アクセスログディレクトリのパスを入力して下さい．: '), LOG_FORMAT)
     
     if input('アクセスログの期間指定しますか？ [Y/n]: ').lower() == 'y':
         start = datetime.datetime.strptime(input('「年/月/日」の形式で半角で開始期間を入力して下さい．: '), '%Y/%m/%d')
