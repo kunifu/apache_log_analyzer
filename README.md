@@ -44,7 +44,6 @@ Argument: The path to the logfile directory you want to use.
 ## Requirements
 - Python 3.6.4
 - apache-log-parser 1.7.0
-- pandas 1.0.3
 
 ## Note
 If you want to use a virtual environment, 
