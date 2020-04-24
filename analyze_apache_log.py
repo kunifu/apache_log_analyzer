@@ -2,8 +2,6 @@ import os
 import apache_log_parser
 from pprint import pprint
 import datetime
-from datetime import timedelta
-import pandas as pd
 import sqlite3
 
 
