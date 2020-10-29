@@ -56,5 +56,8 @@ Deactivate
 (venv)$ deactivate
 ```
 
+## Licence
+[MIT](https://github.com/tcnksm/tool/blob/master/LICENCE)
+
 ## Author
 [kunifu-study](https://github.com/kunifu-study)
