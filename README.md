@@ -60,4 +60,4 @@ Deactivate
 [MIT](https://github.com/tcnksm/tool/blob/master/LICENCE)
 
 ## Author
-[kunifu-study](https://github.com/kunifu-study)
+[Daiki Kou](https://github.com/kunifu)
